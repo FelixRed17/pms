@@ -33,3 +33,10 @@
 # Ignore key files for decrypting credentials and more.
 /config/*.key
 
+# Allow repository-scoped agent/tooling config to be committed.
+!.agents/
+!.agents/**
+!.codex/
+!.codex/**
+!.gemini/
+!.gemini/**
