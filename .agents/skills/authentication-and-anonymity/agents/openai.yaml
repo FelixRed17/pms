@@ -1,0 +1,7 @@
+interface:
+  display_name: "Authentication and Anonymity"
+  short_description: "Protect access control, magic links, and reviewer anonymity"
+  brand_color: "#DC2626"
+  default_prompt: "Apply authentication and anonymity rules: secure magic links, strict authorization, identity separation, token expiry, and anti-leakage protections"
+policy:
+  allow_implicit_invocation: true

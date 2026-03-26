@@ -1,0 +1,8 @@
+interface:
+  display_name: "Rails UI Theme Enforcer"
+  short_description: "Enforce the dark industrial Rails + Tailwind UI theme"
+  brand_color: "#F97316"
+  default_prompt: "Apply the Rails UI theme: dark industrial styling, sharp borders, uppercase headings, mono-inspired typography, orange accents, and consistent Tailwind patterns in html.erb views"
+policy:
+  allow_implicit_invocation: true
+

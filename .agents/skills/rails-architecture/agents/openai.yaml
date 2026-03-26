@@ -1,0 +1,7 @@
+interface:
+  display_name: "Rails Architecture"
+  short_description: "Enforce idiomatic Rails structure and boundaries"
+  brand_color: "#7C3AED"
+  default_prompt: "Apply Rails architecture standards: thin controllers, focused models, clear services, query objects, jobs, policies, and maintainable boundaries"
+policy:
+  allow_implicit_invocation: true

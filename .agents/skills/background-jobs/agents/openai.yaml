@@ -1,0 +1,7 @@
+interface:
+  display_name: "Background Jobs"
+  short_description: "Enforce reliable Active Job and async processing patterns"
+  brand_color: "#2563EB"
+  default_prompt: "Apply background job standards: minimal arguments, safe retries, idempotency, service delegation, observability, and secure async workflows"
+policy:
+  allow_implicit_invocation: true
