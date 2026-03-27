@@ -1,0 +1,15 @@
+---
+config:
+  theme: default
+---
+flowchart TD
+    A(["Start"]) --> B["HR clicks 'Cycles' on dashboard"]
+    B --> C["List of all launched cycles displayed"]
+    C --> D["HR selects a specific cycle to view details"]
+    D --> E["HR views review status (who submitted / who did not)"]
+    E --> F{"Is cycle complete?"}
+    F -- No --> G["Cycle remains open for pending reviews"] --> D
+    F -- Yes --> H["HR clicks 'Close Cycle'"]
+    H --> I["System generates PDF report of cycle"]
+    I --> J["Report saved and automatically downloaded for HR"]
+    J --> K(["End: Cycle closed and report saved"])

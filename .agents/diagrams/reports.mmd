@@ -1,0 +1,31 @@
+---
+config:
+  theme: default
+---
+flowchart TD
+    subgraph HR_App["HR Dashboard"]
+        A(["Start"]) --> B["HR clicks 'Reports' on dashboard"]
+        B --> C["System fetches list of completed cycles with reports"]
+        C --> D["Display list of available cycle reports"]
+        D --> E["HR selects a specific cycle report"]
+        E --> F["Display report details / summary"]
+        F --> G{"Download report?"}
+        G -- Yes --> H["HR clicks 'Download Report'"]
+        H --> I["Trigger report download"]
+        I --> J(["End: Report downloaded"])
+        G -- No --> K["HR returns to reports list"] --> D
+    end
+
+    subgraph Backend["App Backend & Storage"]
+        C --> M["Query database for completed cycles"]
+        F --> N["Fetch report metadata / summary"]
+        H --> O["Retrieve report file from storage"]
+        O --> P["Send file to frontend for download"]
+        P --> I
+        M --> DB[(Database / File Storage)]
+        N --> DB
+        O --> DB
+    end
+
+    DB --> C
+    DB --> N

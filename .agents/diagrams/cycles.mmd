@@ -1,0 +1,30 @@
+---
+config:
+  theme: default
+---
+flowchart TD
+    subgraph HR_App["HR Dashboard"]
+        A(["Start"]) --> B["HR clicks 'Cycles' on dashboard"]
+        B --> C["System fetches list of all launched cycles"]
+        C --> D["HR selects a specific cycle to view details"]
+        D --> E["Display review status (who submitted / who did not)"]
+        E --> F{"Is cycle complete?"}
+        F -- No --> G["Cycle remains open for pending reviews"] --> D
+        F -- Yes --> H["HR clicks 'Close Cycle'"]
+        H --> I["Backend generates PDF report of cycle"]
+        I --> J["Save report to database / file store"]
+        J --> K["Automatically download report for HR"]
+        K --> L(["End: Cycle closed and report saved"])
+    end
+
+    subgraph Backend["App Backend & Storage"]
+        C --> M["Query database for launched cycles"]
+        E --> N["Fetch submission status from database"]
+        H --> I
+        I --> O["Generate and format PDF report"]
+        O --> J
+        J --> DB[(Database / File Storage)]
+    end
+
+    DB --> C
+    DB --> N

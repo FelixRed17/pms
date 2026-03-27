@@ -15,13 +15,23 @@ Building a system where HR launches a review cycle, peers submit anonymous feedb
 | Agent                        | Purpose                                                          | When to Use                                                        |
 | ---------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------ |
 | coding-standard              | Enforce clean, readable, maintainable code                       | Complex features, refactoring, PR reviews                          |
-| rails-theme-enforcer         | Maintain consistent Rails + Tailwind UI styling                  | Building or reviewing views, partials, layouts, and components     |
+| rails-ui-theme-enforcer      | Maintain consistent Rails + Tailwind UI styling                  | Building or reviewing views, partials, layouts, and components     |
 | tdd-workflow                 | Enforce red-green-refactor development workflow                  | New features, bug fixes, behavior changes                          |
 | security-review              | Detect vulnerabilities and enforce secure implementation         | Auth, input handling, secrets, anonymous and sensitive features    |
 | rails-architecture           | Maintain idiomatic Rails structure and responsibility boundaries | Designing new flows, refactoring services, queries, and app layers |
 | authentication-and-anonymity | Protect authentication flows and reviewer anonymity              | Magic links, permissions, anonymous submissions, secure delivery   |
 | pdf-report-generation        | Standardize branded, secure, reliable PDF workflows              | Report generation, exports, print layouts, PDF delivery            |
 | background-jobs              | Standardize async processing and retry-safe job design           | Emails, reminders, scheduled work, batch processing, heavy tasks   |
+
+## Reference Diagrams
+
+Consult the Mermaid diagrams in `.agents/diagrams/` before modifying architecture-sensitive areas.
+
+- `review-cycle-flow.mmd` — review lifecycle and state transitions
+- `anonymity-boundary.mmd` — reviewer identity isolation and trust boundaries
+- `magic-link-auth-flow.mmd` — token generation, expiry, and access rules
+- `pdf-report-generation-flow.mmd` — report generation, storage, and delivery
+- `background-jobs-flow.mmd` — async processing and retry boundaries
 
 ## Security Guidelines
 
