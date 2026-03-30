@@ -1,0 +1,44 @@
+---
+config:
+  theme: default
+---
+flowchart TD
+    subgraph HR_App["HR Dashboard"]
+        A(["Start"]) --> B["HR clicks 'Launch New Cycle'"]
+        B --> C["Display form to enter cycle name"]
+        C --> D["HR enters cycle name"]
+        D --> E["Display form to enter cycle details"]
+        E --> F["HR enters cycle details"]
+        F --> G["Display review type options"]
+        G --> H["HR selects review type"]
+        H --> I["Display peer reviewer assignment UI"]
+        I --> J["HR assigns peer reviewers"]
+        J --> K["Display manager assignment UI"]
+        K --> L["HR assigns managers"]
+        L --> M["Display review summary screen"]
+        M --> N{"Confirm and activate cycle?"}
+        N -- No --> M
+        N -- Yes --> O["HR clicks 'Activate Cycle'"]
+        O --> P(["End: Cycle Activated"])
+    end
+
+    subgraph Backend["App Backend & Storage"]
+        B --> Q["Create draft review cycle"]
+        D --> R["Save cycle name to database"]
+        F --> S["Save cycle details (dates, description)"]
+        H --> T["Save review type"]
+        J --> U["Create peer review assignments"]
+        L --> V["Create manager assignments"]
+        O --> W{"Validate cycle is complete?"}
+        W -- No --> X["Return validation errors"]
+        W -- Yes --> Y["Mark cycle as active"]
+        Y --> Z["Trigger notifications (emails, etc.)"]
+        Z --> DB[(Database)]
+    end
+
+    DB --> R
+    DB --> S
+    DB --> T
+    DB --> U
+    DB --> V
+    DB --> Y

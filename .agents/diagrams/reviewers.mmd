@@ -1,0 +1,30 @@
+flowchart TD
+    subgraph Reviewer_App["Reviewer Experience"]
+        A(["Start"]) --> B["Reviewer receives review email"]
+        B --> C["Reviewer opens email"]
+        C --> D["Clicks magic link"]
+        D --> E["Review form opens in browser"]
+        E --> F["Reviewer completes review form"]
+        F --> G["Clicks 'Submit Review'"]
+        G --> H["Display confirmation screen"]
+        H --> I(["End: Review submitted"])
+    end
+
+    subgraph Backend["Rails Backend & Storage"]
+        B --> J["Send review email with secure token link"]
+
+        D --> K["GET /reviews/:token"]
+        K --> L["Validate token (secure, time-limited)"]
+        L --> M["Fetch review + reviewer context"]
+        M --> N["Render review form"]
+
+        G --> O["POST /reviews/:id/submit"]
+        O --> P["Validate review responses"]
+        P --> Q["Persist review submission"]
+        Q --> DB[(Database)]
+
+        Q --> R["Mark review as completed"]
+        R --> S["Return success response"]
+    end
+
+    DB --> M

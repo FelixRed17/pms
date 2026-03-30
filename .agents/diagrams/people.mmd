@@ -1,0 +1,40 @@
+flowchart TD
+    subgraph HR_App["HR Dashboard"]
+        A(["Start"]) --> B["HR clicks 'People' on dashboard"]
+        B --> C["System requests list of employees"]
+        C --> D{"What does HR want to do?"}
+
+        D -- Browse Existing People --> E["Display list of existing employees"]
+        E --> F["HR selects an employee"]
+        F --> G["Open selected employee profile"]
+        G --> H["HR clicks 'Create Review Cycle' for selected employee"]
+        H --> I["Request review cycle creation"]
+
+        D -- Add New Employee --> J["HR clicks 'Add New Employee'"]
+        J --> K["Display employee creation form"]
+        K --> L["HR enters employee details"]
+        L --> M["HR clicks 'Save Employee'"]
+        M --> N["Request employee creation"]
+        N --> O["Open new employee profile"]
+        O --> P["HR clicks 'Create Review Cycle' for new employee"]
+        P --> I
+
+        I --> Q(["End: Review cycle created"])
+    end
+
+    subgraph Backend["Rails Backend & Storage"]
+        C --> R["Query Employee records"]
+        F --> S["Fetch employee details"]
+        H --> T["POST /review_cycles with employee_id"]
+        L --> U["Validate employee params"]
+        M --> V["POST /employees"]
+        V --> W["Create Employee record"]
+        W --> X["Return new employee"]
+        P --> T
+        T --> Y["Create ReviewCycle record"]
+        Y --> DB[(Database)]
+    end
+
+    DB --> R
+    DB --> S
+    X --> O
