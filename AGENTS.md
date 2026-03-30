@@ -27,11 +27,13 @@ Building a system where HR launches a review cycle, peers submit anonymous feedb
 
 Consult the Mermaid diagrams in `.agents/diagrams/` before modifying architecture-sensitive areas.
 
-- `review-cycle-flow.mmd` — review lifecycle and state transitions
-- `anonymity-boundary.mmd` — reviewer identity isolation and trust boundaries
-- `magic-link-auth-flow.mmd` — token generation, expiry, and access rules
-- `pdf-report-generation-flow.mmd` — report generation, storage, and delivery
-- `background-jobs-flow.mmd` — async processing and retry boundaries
+- `createNewCycle.mmd` — review cycle creation flow
+- `cycles.mmd` — review cycle flow including system components
+- `cyclesWithoutSystemComponents.mmd` — review cycle flow without system components
+- `people.mmd` — people and participant-related flow or relationships
+- `reports.mmd` — report generation and delivery flow including system components
+- `reportsWithoutSystemComponents.mmd` — report flow without system components
+- `reviewers.mmd` — reviewer journey, roles, or review submission flow
 
 ## Security Guidelines
 
