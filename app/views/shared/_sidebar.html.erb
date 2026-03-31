@@ -1,0 +1,51 @@
+<% nav_items = [
+  { id: "launch", label: "Launch New Cycle" },
+  { id: "cycles", label: "Cycles" },
+  { id: "employees", label: "Employees" },
+  { id: "reports", label: "Reports" }
+] %>
+
+<aside
+  class="fixed inset-y-0 left-0 z-40 flex w-72 -translate-x-full flex-col border-r border-slate-800 bg-slate-950 text-slate-100 transition-transform duration-300 md:translate-x-0"
+  data-dashboard-shell-target="sidebar"
+>
+  <div class="border-b border-slate-800 px-6 py-6">
+    <%= image_tag "glucodebadge.png", alt: "Glucode", class: "h-14 w-auto" %>
+  </div>
+
+  <nav class="flex-1 px-4 py-6">
+    <ul class="space-y-2">
+      <% nav_items.each_with_index do |item, index| %>
+        <li>
+          <button
+            type="button"
+            class="flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left text-sm font-medium transition duration-200"
+            data-action="dashboard-shell#switchSection"
+            data-dashboard-shell-target="navItem"
+            data-section="<%= item[:id] %>"
+            aria-current="false"
+          >
+            <span><%= item[:label] %></span>
+            <span class="rounded-full border border-slate-700 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+              <%= format("%02d", index + 1) %>
+            </span>
+          </button>
+        </li>
+      <% end %>
+    </ul>
+  </nav>
+
+  <div class="border-t border-slate-800 px-6 py-5">
+    <% if current_user.present? %>
+      <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-slate-700 text-sm font-semibold text-white">
+          <%= current_user.name.first.upcase %>
+        </div>
+        <div>
+          <p class="text-sm font-medium text-white"><%= current_user.name %></p>
+          <p class="text-xs text-slate-400"><%= current_user.email %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</aside>

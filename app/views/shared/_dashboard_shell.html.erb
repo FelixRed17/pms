@@ -1,0 +1,80 @@
+<div
+  class="min-h-screen bg-slate-100"
+  data-controller="dashboard-shell"
+  data-dashboard-shell-active-value="<%= @active_dashboard_section || "launch" %>"
+>
+  <%= render "shared/sidebar" %>
+
+  <div class="md:pl-72">
+    <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
+      <div class="flex items-center justify-between px-4 py-4 sm:px-6 lg:px-10">
+        <div class="flex items-center gap-3">
+          <button
+            type="button"
+            class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:border-slate-300 hover:text-slate-900 md:hidden"
+            data-action="dashboard-shell#toggleSidebar"
+          >
+            <span class="sr-only">Toggle navigation</span>
+            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+              <path d="M3 5h14M3 10h14M3 15h14" stroke-linecap="round" />
+            </svg>
+          </button>
+
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">HR Dashboard</p>
+            <h2 class="text-xl font-semibold tracking-tight text-slate-900">Review Cycle Workspace</h2>
+          </div>
+        </div>
+
+        <div class="hidden items-center gap-3 sm:flex">
+          <div class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2 shadow-sm">
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Environment</p>
+            <p class="mt-1 text-sm font-medium text-slate-700">Internal HR Admin</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
+      <section
+        class="space-y-6"
+        data-dashboard-shell-target="panel"
+        data-section="launch"
+      >
+
+        <%= render template: "reviewcycles/new" %>
+      
+      </section>
+
+      <section
+        class="hidden space-y-6"
+        data-dashboard-shell-target="panel"
+        data-section="cycles"
+      >
+        <%= render template: "dashboard/cycles" %>
+      </section>
+
+      <section
+        class="hidden space-y-6"
+        data-dashboard-shell-target="panel"
+        data-section="employees"
+      >
+        <%= render template: "dashboard/employees" %>
+      </section>
+
+      <section
+        class="hidden space-y-6"
+        data-dashboard-shell-target="panel"
+        data-section="reports"
+      >
+        <%= render template: "dashboard/reports" %>
+      </section>
+    </main>
+  </div>
+
+  <div
+    class="fixed inset-0 z-30 hidden bg-slate-950/40 md:hidden"
+    data-dashboard-shell-target="overlay"
+    data-action="click->dashboard-shell#closeSidebar"
+  ></div>
+</div>

@@ -19,11 +19,42 @@
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <script>
+      tailwind = {
+        config: {
+          theme: {
+            extend: {
+              fontFamily: {
+                sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"]
+              },
+              colors: {
+                brand: {
+                  50: "#fff7ed",
+                  100: "#ffedd5",
+                  500: "#f97316",
+                  600: "#ea580c",
+                  700: "#c2410c"
+                }
+              },
+              boxShadow: {
+                shell: "0 24px 60px rgba(15, 23, 42, 0.08)",
+                card: "0 10px 30px rgba(15, 23, 42, 0.06)"
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="min-h-screen bg-slate-100 font-sans text-slate-900 antialiased">
+    <% if @render_dashboard_shell %>
+      <%= render "shared/dashboard_shell" %>
+    <% else %>
+      <%= yield %>
+    <% end %>
   </body>
 </html>

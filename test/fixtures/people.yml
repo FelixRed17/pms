@@ -1,0 +1,29 @@
+ada:
+  first_name: Ada
+  last_name: Lovelace
+  email: ada@example.com
+
+grace:
+  first_name: Grace
+  last_name: Hopper
+  email: grace@example.com
+
+linus:
+  first_name: Linus
+  last_name: Torvalds
+  email: linus@example.com
+
+katherine:
+  first_name: Katherine
+  last_name: Johnson
+  email: katherine@example.com
+
+margaret:
+  first_name: Margaret
+  last_name: Hamilton
+  email: margaret@example.com
+
+donald:
+  first_name: Donald
+  last_name: Knuth
+  email: donald@example.com

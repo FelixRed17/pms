@@ -1,0 +1,46 @@
+<div
+  class="space-y-4"
+  data-controller="peer-reviewer-selector"
+  data-employees="<%= json_escape(people.map { |person|
+    {
+      id: person.id,
+      name: [person.first_name, person.last_name].join(" "),
+      email: person.email,
+      jobTitle: person.job_title
+    }
+  }.to_json) %>"
+  data-peer-reviewer-selector-reviewee-input-id-value="review_cycle_reviewee_id"
+  data-peer-reviewer-selector-manager-input-id-value="review_cycle_manager_id"
+>
+  <%= form.label :peer_reviewer_ids, "Add Peer Reviewers", class: "block text-sm font-medium text-slate-700" %>
+  <p class="mt-1 text-sm text-slate-500">Search and add up to three peers who will review the selected reviewee.</p>
+
+  <div data-peer-reviewer-selector-target="hiddenInputs"></div>
+
+  <div class="relative">
+    <input
+      type="text"
+      class="block w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
+      placeholder="Search employees to add as peer reviewers"
+      data-peer-reviewer-selector-target="input"
+      data-action="input->peer-reviewer-selector#search focus->peer-reviewer-selector#open blur->peer-reviewer-selector#closeLater"
+    >
+
+    <div
+      class="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-20 hidden overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl"
+      data-peer-reviewer-selector-target="suggestions"
+    ></div>
+  </div>
+
+  <div
+    class="space-y-3"
+    data-peer-reviewer-selector-target="selectedList"
+  ></div>
+
+  <div class="flex items-center justify-between gap-3">
+    <p class="text-xs font-medium uppercase tracking-[0.2em] text-slate-400" data-peer-reviewer-selector-target="helper">
+      You can add up to 3 peer reviewers
+    </p>
+    <p class="text-xs font-semibold text-slate-500">Max 3 reviewers</p>
+  </div>
+</div>
