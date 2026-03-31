@@ -1,0 +1,62 @@
+<% content_for :title, "Cycles" %>
+
+<div class="grid gap-5 lg:grid-cols-3">
+  <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-card">
+    <p class="text-sm font-medium text-slate-500">Total Cycles</p>
+    <p class="mt-3 text-4xl font-semibold tracking-tight text-slate-900"><%= @review_cycles.count %></p>
+  </div>
+  <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-card">
+    <p class="text-sm font-medium text-slate-500">Active</p>
+    <p class="mt-3 text-4xl font-semibold tracking-tight text-slate-900"><%= @review_cycles.count { |cycle| cycle.status == "active" } %></p>
+  </div>
+  <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-card">
+    <p class="text-sm font-medium text-slate-500">Closed</p>
+    <p class="mt-3 text-4xl font-semibold tracking-tight text-slate-900"><%= @review_cycles.count { |cycle| cycle.status == "closed" } %></p>
+  </div>
+</div>
+
+<div class="rounded-3xl border border-slate-200 bg-white shadow-shell">
+  <div class="flex items-center justify-between border-b border-slate-200 px-6 py-5">
+    <div>
+      <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Cycles</p>
+      <h3 class="mt-1 text-xl font-semibold text-slate-900">Review cycle list</h3>
+    </div>
+  </div>
+
+  <% if @review_cycles.any? %>
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-slate-200">
+        <thead class="bg-slate-50">
+          <tr class="text-left text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+            <th class="px-6 py-4">Cycle</th>
+            <th class="px-6 py-4">Reviewee</th>
+            <th class="px-6 py-4">Manager</th>
+            <th class="px-6 py-4">Peers</th>
+            <th class="px-6 py-4">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 bg-white text-sm text-slate-700">
+          <% @review_cycles.each do |cycle| %>
+            <tr>
+              <td class="px-6 py-4">
+                <p class="font-semibold text-slate-900"><%= cycle.name %></p>
+                <p class="mt-1 text-xs text-slate-500"><%= cycle.start_on %> to <%= cycle.end_on %></p>
+              </td>
+              <td class="px-6 py-4"><%= [cycle.reviewee.first_name, cycle.reviewee.last_name].join(" ") %></td>
+              <td class="px-6 py-4"><%= [cycle.manager.first_name, cycle.manager.last_name].join(" ") %></td>
+              <td class="px-6 py-4"><%= cycle.peer_reviewers.count %></td>
+              <td class="px-6 py-4">
+                <span class="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600"><%= cycle.status %></span>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="px-6 py-12 text-center">
+      <p class="text-lg font-semibold text-slate-900">No review cycles yet.</p>
+      <p class="mt-2 text-sm text-slate-500">Use Launch New Cycle to configure the first cycle.</p>
+    </div>
+  <% end %>
+</div>
