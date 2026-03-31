@@ -10,7 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema[8.1].define(version: 2026_03_30_083000) do
+  create_table "magic_links", force: :cascade do |t|
+    t.datetime "accessed_at"
+    t.datetime "created_at", null: false
+    t.datetime "expires_at", null: false
+    t.string "purpose", null: false
+    t.string "recipient_identifier"
+    t.bigint "resource_id", null: false
+    t.string "resource_type", null: false
+    t.datetime "revoked_at"
+    t.string "token_digest", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "used_at"
+    t.index ["purpose", "resource_type", "resource_id"], name: "index_magic_links_on_purpose_and_resource"
+    t.index ["purpose"], name: "index_magic_links_on_purpose"
+    t.index ["resource_type", "resource_id"], name: "index_magic_links_on_resource_type_and_resource_id"
+    t.index ["token_digest"], name: "index_magic_links_on_token_digest", unique: true
+  end
+
+  create_table "review_assignments", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+  end
+  
   create_table "peer_review_assignments", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "peer_reviewer_id", null: false

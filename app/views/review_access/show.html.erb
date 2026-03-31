@@ -1,0 +1,8 @@
+<h1>Review Access</h1>
+
+<p>Your secure review link is active.</p>
+<p>Resource: <%= @resource.class.name %> #<%= @resource.id %></p>
+
+<%= form_with url: consume_review_access_path, method: :post, local: true do |form| %>
+  <%= form.submit "Continue" %>
+<% end %>
