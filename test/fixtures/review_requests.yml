@@ -1,0 +1,31 @@
+ada_self_review_request:
+  review_cycle: engineering_q2
+  reviewee: ada
+  reviewer: ada
+  reviewer_role: reviewee
+  recipient_email: ada@example.com
+  status: pending
+
+linus_peer_review_request:
+  review_cycle: engineering_q2
+  reviewee: ada
+  reviewer: linus
+  reviewer_role: peer
+  recipient_email: linus@example.com
+  status: pending
+
+grace_manager_review_request:
+  review_cycle: engineering_q2
+  reviewee: ada
+  reviewer: grace
+  reviewer_role: manager
+  recipient_email: grace@example.com
+  status: pending
+
+katherine_peer_review_request:
+  review_cycle: engineering_q2
+  reviewee: ada
+  reviewer: katherine
+  reviewer_role: peer
+  recipient_email: katherine@example.com
+  status: pending

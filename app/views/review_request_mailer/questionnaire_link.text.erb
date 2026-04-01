@@ -1,0 +1,9 @@
+Performance Review Questionnaire
+
+Questionnaire: <%= @questionnaire_title %>
+Reviewee: <%= @reviewee.full_name %>
+
+Use this secure magic link to open and submit the questionnaire:
+<%= @magic_link_url %>
+
+This link is intended only for <%= @review_request.recipient_email %> and should not be shared.

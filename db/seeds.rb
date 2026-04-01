@@ -19,3 +19,5 @@ people_attributes.each do |attributes|
   person = Person.find_or_initialize_by(email: attributes[:email])
   person.update!(attributes)
 end
+
+QuestionnaireTemplate.seed_system_templates!

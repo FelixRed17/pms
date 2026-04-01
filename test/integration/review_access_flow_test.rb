@@ -2,11 +2,11 @@ require "test_helper"
 
 class ReviewAccessFlowTest < ActionDispatch::IntegrationTest
   setup do
-    @assignment = ReviewAssignment.create!(name: "Leadership Review")
+    @review_request = review_requests(:katherine_peer_review_request)
   end
 
   test "valid magic link shows the access page and records access time" do
-    magic_link = MagicLink.issue!(purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION, resource: @assignment)
+    magic_link = MagicLink.issue!(purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION, resource: @review_request)
 
     get review_access_path(token: magic_link.raw_token)
 
@@ -29,7 +29,7 @@ class ReviewAccessFlowTest < ActionDispatch::IntegrationTest
   test "expired token redirects to the invalid page" do
     magic_link = MagicLink.issue!(
       purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION,
-      resource: @assignment,
+      resource: @review_request,
       expires_at: 1.minute.ago
     )
 
@@ -39,35 +39,58 @@ class ReviewAccessFlowTest < ActionDispatch::IntegrationTest
   end
 
   test "consume marks the link used and redirects to confirmation" do
-    magic_link = MagicLink.issue!(purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION, resource: @assignment)
+    magic_link = MagicLink.issue!(purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION, resource: @review_request)
 
     get review_access_path(token: magic_link.raw_token)
-    post consume_review_access_path
+    post submit_review_access_path(token: magic_link.raw_token), params: valid_submission_params(@review_request)
 
     assert_redirected_to confirmation_review_access_path
     assert_predicate magic_link.reload, :used?
   end
 
   test "used links cannot be replayed" do
-    magic_link = MagicLink.issue!(purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION, resource: @assignment)
+    magic_link = MagicLink.issue!(purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION, resource: @review_request)
 
     get review_access_path(token: magic_link.raw_token)
-    post consume_review_access_path
+    post submit_review_access_path(token: magic_link.raw_token), params: valid_submission_params(@review_request)
     get review_access_path(token: magic_link.raw_token)
 
     assert_redirected_to invalid_review_access_path
   end
 
   test "tampered session scope is rejected during consume" do
-    magic_link = MagicLink.issue!(purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION, resource: @assignment)
-    another_assignment = ReviewAssignment.create!(name: "Peer Review")
+    magic_link = MagicLink.issue!(purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION, resource: @review_request)
+    another_request = review_requests(:grace_manager_review_request)
 
     get review_access_path(token: magic_link.raw_token)
-    magic_link.update_columns(resource_id: another_assignment.id, updated_at: Time.current)
+    magic_link.update_columns(resource_id: another_request.id, updated_at: Time.current)
 
-    post consume_review_access_path
+    post submit_review_access_path(token: magic_link.raw_token), params: valid_submission_params(@review_request)
 
     assert_redirected_to invalid_review_access_path
     assert_not_predicate magic_link.reload, :used?
+  end
+
+  private
+
+  def valid_submission_params(review_request)
+    {
+      review_submission: {
+        review_answers_attributes: review_request
+          .questionnaire_template
+          .rendered_question_templates
+          .each_with_index
+          .to_h do |question_template, index|
+            [
+              index.to_s,
+              {
+                question_template_id: question_template.id,
+                score: 4,
+                comment: "Response #{index + 1}"
+              }
+            ]
+          end
+      }
+    }
   end
 end

@@ -22,8 +22,10 @@ class DashboardController < ApplicationController
   def prepare_dashboard_shell
     @render_dashboard_shell = true
     @people = Person.order(:first_name, :last_name)
+    @review_cycle = ReviewCycle.new(status: "draft")
+    @questionnaire_templates = QuestionnaireTemplate.includes(:question_templates).order(:audience_type)
     @review_cycles = ReviewCycle
-      .includes(:reviewee, :manager, :peer_reviewers)
+      .includes(:reviewee, :manager, :peer_reviewers, review_requests: [:reviewer, :review_request_audits])
       .order(created_at: :desc)
   end
 end

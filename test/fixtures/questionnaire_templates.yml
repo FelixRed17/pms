@@ -1,0 +1,11 @@
+self_review:
+  name: Self Review Questionnaire
+  audience_type: self_review
+
+peer_review:
+  name: Peer Feedback Questionnaire
+  audience_type: peer_review
+
+manager_review:
+  name: Manager Feedback Questionnaire
+  audience_type: manager_review

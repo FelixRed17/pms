@@ -2,6 +2,7 @@ class User < ApplicationRecord
   ROLES = %w[employee hr].freeze
 
   has_one :person, dependent: :nullify
+  has_many :review_request_audits, foreign_key: :performed_by_id, inverse_of: :performed_by, dependent: :nullify
 
   before_validation :normalize_email
 
@@ -14,4 +15,6 @@ class User < ApplicationRecord
   def normalize_email
     self.email = email.to_s.strip.downcase.presence
   end
+
+  
 end

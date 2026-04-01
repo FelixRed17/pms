@@ -2,7 +2,7 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   test "is valid with an email and supported role" do
-    user = User.new(name: "HR User", email: "hr@example.com", role: "hr")
+    user = User.new(name: "HR User", email: "new-hr@example.com", role: "hr")
 
     assert user.valid?
   end

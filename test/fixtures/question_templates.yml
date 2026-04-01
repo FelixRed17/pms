@@ -1,0 +1,154 @@
+self_job_satisfaction:
+  questionnaire_template: self_review
+  title: Job Satisfaction
+  description: I feel a strong sense of achievement and satisfaction in my role at Glucode.
+  question_type: score_with_comment
+  position: 1
+  required: true
+
+self_skills:
+  questionnaire_template: self_review
+  title: Skills & Abilities
+  description: My skills, strengths, and talents are effectively utilised in my current role.
+  question_type: score_with_comment
+  position: 2
+  required: true
+
+self_role_clarity:
+  questionnaire_template: self_review
+  title: Role Clarity
+  description: I have a clear understanding of what is expected of me in my role.
+  question_type: score_with_comment
+  position: 3
+  required: true
+
+self_tools:
+  questionnaire_template: self_review
+  title: Tools and Equipment
+  description: I have the tools and equipment I need to perform my role effectively.
+  question_type: score_with_comment
+  position: 4
+  required: true
+
+self_growth:
+  questionnaire_template: self_review
+  title: Growth and Development
+  description: I feel supported by Glucode in my learning and professional development.
+  question_type: score_with_comment
+  position: 5
+  required: true
+
+self_feedback:
+  questionnaire_template: self_review
+  title: Feedback & Recognition
+  description: I receive meaningful feedback and recognition that helps me grow.
+  question_type: score_with_comment
+  position: 6
+  required: true
+
+self_functional:
+  questionnaire_template: self_review
+  title: Functional and Technical Knowledge
+  description: Role knowledge, technical competence, quality of work, and problem solving.
+  question_type: score_with_comment
+  position: 8
+  required: true
+  category: Functional and Technical Knowledge
+
+self_values_alignment:
+  questionnaire_template: self_review
+  title: Values Alignment
+  description: Company values, cultural sensitivity, and engagement.
+  question_type: score_with_comment
+  position: 9
+  required: true
+  category: Values Alignment
+
+self_collaboration:
+  questionnaire_template: self_review
+  title: Collaboration and Teamwork
+  description: Participation, collaboration, relationship building, and receiving feedback.
+  question_type: score_with_comment
+  position: 10
+  required: true
+  category: Collaboration and Teamwork
+
+self_adaptability:
+  questionnaire_template: self_review
+  title: Adaptability and Continuous Learning
+  description: Flexibility, openness to change, resilience, and learning agility.
+  question_type: score_with_comment
+  position: 11
+  required: true
+  category: Adaptability and Continuous Learning
+
+self_time_management:
+  questionnaire_template: self_review
+  title: Time Management and Reliability
+  description: Prioritisation, dependability, efficiency, and punctuality.
+  question_type: score_with_comment
+  position: 12
+  required: true
+  category: Time Management and Reliability
+
+peer_functional:
+  questionnaire_template: peer_review
+  title: Functional and Technical Knowledge
+  description: Evaluate role knowledge, technical competence, quality of work, and problem solving.
+  question_type: score_with_comment
+  position: 1
+  required: true
+  category: Functional and Technical Knowledge
+
+peer_values:
+  questionnaire_template: peer_review
+  title: Values Alignment
+  description: Evaluate company values, cultural sensitivity, and engagement.
+  question_type: score_with_comment
+  position: 2
+  required: true
+  category: Values Alignment
+
+peer_collaboration:
+  questionnaire_template: peer_review
+  title: Collaboration and Teamwork
+  description: Evaluate participation, collaboration, relationship building, and receiving feedback.
+  question_type: score_with_comment
+  position: 3
+  required: true
+  category: Collaboration and Teamwork
+
+peer_adaptability:
+  questionnaire_template: peer_review
+  title: Adaptability and Continuous Learning
+  description: Evaluate flexibility, openness to change, resilience, and learning agility.
+  question_type: score_with_comment
+  position: 4
+  required: true
+  category: Adaptability and Continuous Learning
+
+peer_time:
+  questionnaire_template: peer_review
+  title: Time Management and Reliability
+  description: Evaluate prioritisation, reliability, efficiency, and punctuality.
+  question_type: score_with_comment
+  position: 5
+  required: true
+  category: Time Management and Reliability
+
+peer_professional:
+  questionnaire_template: peer_review
+  title: Professional Conduct and Integrity
+  description: Evaluate professionalism, respect, confidentiality, and leadership alignment.
+  question_type: score_with_comment
+  position: 6
+  required: true
+  category: Professional Conduct and Integrity
+
+manager_overall:
+  questionnaire_template: manager_review
+  title: Overall performance of Employee
+  description: Summarise overall performance, delivery, and growth areas.
+  question_type: score_with_comment
+  position: 1
+  required: true

@@ -126,4 +126,11 @@ class ReviewCycleTest < ActiveSupport::TestCase
     assert_not review_cycle.valid?
     assert_includes review_cycle.errors[:end_on], "must be on or after the start date"
   end
+
+  test "supports review requests and submissions" do
+    review_cycle = review_cycles(:engineering_q2)
+
+    assert_equal 4, review_cycle.review_requests.count
+    assert_includes review_cycle.review_submissions, review_submissions(:self_submission)
+  end
 end

@@ -1,0 +1,65 @@
+self_functional:
+  review_submission: self_submission
+  question_template: self_functional
+  score: 4
+  comment: Strong technical execution and problem solving.
+
+self_values:
+  review_submission: self_submission
+  question_template: self_values_alignment
+  score: 4
+  comment: I consistently model the company values.
+
+self_collaboration:
+  review_submission: self_submission
+  question_template: self_collaboration
+  score: 3
+  comment: I collaborate well and can still improve cross-team communication.
+
+self_adaptability:
+  review_submission: self_submission
+  question_template: self_adaptability
+  score: 4
+  comment: I adapt quickly to changing priorities.
+
+self_time:
+  review_submission: self_submission
+  question_template: self_time_management
+  score: 5
+  comment: I consistently deliver on time.
+
+peer_functional_answer:
+  review_submission: peer_submission
+  question_template: peer_functional
+  score: 4
+  comment: Reliable technical judgement and steady delivery.
+
+peer_values_answer:
+  review_submission: peer_submission
+  question_template: peer_values
+  score: 4
+  comment: Models the team values well.
+
+peer_collaboration_answer:
+  review_submission: peer_submission
+  question_template: peer_collaboration
+  score: 4
+  comment: Supports team delivery and keeps communication clear.
+
+peer_adaptability_answer:
+  review_submission: peer_submission
+  question_template: peer_adaptability
+  score: 3
+  comment: Handles change well with occasional support.
+
+peer_time_answer:
+  review_submission: peer_submission
+  question_template: peer_time
+  score: 5
+  comment: Extremely dependable on deadlines.
+
+manager_overall_answer:
+  review_submission: manager_submission
+  question_template: manager_overall
+  score: 4
+  comment: Strong ownership across the quarter.
