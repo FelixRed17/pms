@@ -2,7 +2,27 @@ require "test_helper"
 
 class MagicLinkTest < ActiveSupport::TestCase
   setup do
-    @assignment = ReviewAssignment.create!(name: "Quarterly Review")
+    @reviewee = people(:ada)
+    @manager = people(:grace)
+    @peer = people(:linus)
+
+    @cycle = ReviewCycle.create!(
+      reviewee: @reviewee,
+      manager: @manager,
+      name: "2026 Mid-Year Review",
+      status: "active",
+      start_on: Date.new(2026, 6, 1),
+      end_on: Date.new(2026, 6, 30)
+    )
+
+    @assignment = ReviewAssignment.create!(
+      name: "Quarterly Review",
+      review_cycle: @cycle,
+      reviewer: @peer,
+      reviewee: @reviewee,
+      assignment_type: "peer",
+      status: "pending"
+    )
   end
 
   test "issue stores a digest and exposes the raw token on the returned record only" do

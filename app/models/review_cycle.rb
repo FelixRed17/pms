@@ -5,6 +5,7 @@ class ReviewCycle < ApplicationRecord
   belongs_to :reviewee, class_name: "Person", inverse_of: :review_cycles_as_reviewee
   belongs_to :manager, class_name: "Person", inverse_of: :managed_review_cycles
 
+  has_many :review_assignments, dependent: :destroy, inverse_of: :review_cycle
   has_many :peer_review_assignments, dependent: :destroy, inverse_of: :review_cycle
   has_many :peer_reviewers, through: :peer_review_assignments, source: :peer_reviewer
 

@@ -23,5 +23,9 @@ module Pms
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    config.action_dispatch.default_headers.merge!(
+      "Referrer-Policy" => "no-referrer",
+      "X-Frame-Options" => "DENY"
+    )
   end
 end

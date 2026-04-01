@@ -19,3 +19,74 @@ people_attributes.each do |attributes|
   person = Person.find_or_initialize_by(email: attributes[:email])
   person.update!(attributes)
 end
+
+question_attributes = [
+  {
+    question_text: "What are %{subject_possessive} strongest contributions?",
+    question_type: "text",
+    audience: "all",
+    position: 1,
+    active: true
+  },
+  {
+    question_text: "How consistently does %{subject_name} deliver on commitments?",
+    question_type: "rating",
+    audience: "all",
+    position: 2,
+    active: true
+  },
+  {
+    question_text: "Would you want to work with %{subject_object} again on a critical project?",
+    question_type: "boolean",
+    audience: "all",
+    position: 3,
+    active: true
+  },
+  {
+    question_text: "What are your most important growth goals for the next review cycle?",
+    question_type: "text",
+    audience: "self",
+    position: 4,
+    active: true
+  },
+  {
+    question_text: "Where do you believe you need the most support to be more effective?",
+    question_type: "text",
+    audience: "self",
+    position: 5,
+    active: true
+  },
+  {
+    question_text: "How effectively does %{subject_name} collaborate with peers across the team?",
+    question_type: "rating",
+    audience: "peer",
+    position: 6,
+    active: true
+  },
+  {
+    question_text: "What peer-facing behavior from %{subject_name} should be strengthened or improved?",
+    question_type: "text",
+    audience: "peer",
+    position: 7,
+    active: true
+  },
+  {
+    question_text: "How well does %{subject_name} demonstrate leadership, ownership, and sound judgement?",
+    question_type: "rating",
+    audience: "manager",
+    position: 8,
+    active: true
+  },
+  {
+    question_text: "What manager recommendations would help %{subject_name} grow in the next cycle?",
+    question_type: "text",
+    audience: "manager",
+    position: 9,
+    active: true
+  }
+]
+
+question_attributes.each do |attributes|
+  question = Question.find_or_initialize_by(question_text: attributes[:question_text])
+  question.update!(attributes)
+end

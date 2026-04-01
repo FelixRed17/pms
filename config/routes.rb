@@ -18,8 +18,17 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-  get "/review_access/invalid", to: "review_access#invalid", as: :invalid_review_access
-  get "/review_access/confirmation", to: "review_access#confirmation", as: :confirmation_review_access
-  get "/review_access/:token", to: "review_access#show", as: :review_access
-  post "/review_access/consume", to: "review_access#consume", as: :consume_review_access
+  resource :review_access, only: [ :show ], controller: :review_access do
+    post :consume
+    get :invalid
+    get :confirmation
+  end
+
+  resources :review_cycles, only: [] do
+    resources :review_assignments, only: [ :index ] do
+      post :send_magic_link, on: :member
+    end
+  end
+
+  get "/review_access/:token", to: "review_access#exchange", as: :review_access_token
 end

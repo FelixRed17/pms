@@ -33,6 +33,7 @@
             <th class="px-6 py-4">Manager</th>
             <th class="px-6 py-4">Peers</th>
             <th class="px-6 py-4">Status</th>
+            <th class="px-6 py-4">Actions</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-100 bg-white text-sm text-slate-700">
@@ -47,6 +48,9 @@
               <td class="px-6 py-4"><%= cycle.peer_reviewers.count %></td>
               <td class="px-6 py-4">
                 <span class="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600"><%= cycle.status %></span>
+              </td>
+              <td class="px-6 py-4">
+                <%= link_to "Assignments", review_cycle_review_assignments_path(cycle), class: "inline-flex items-center justify-center rounded-2xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:text-slate-900" %>
               </td>
             </tr>
           <% end %>
