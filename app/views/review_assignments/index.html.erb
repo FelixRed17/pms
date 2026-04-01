@@ -1,0 +1,78 @@
+<% content_for :title, "#{@review_cycle.name} Assignments" %>
+
+<div class="mx-auto max-w-6xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
+  <div class="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-shell sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Review Delivery</p>
+      <h1 class="mt-1 text-2xl font-semibold tracking-tight text-slate-900"><%= @review_cycle.name %></h1>
+      <p class="mt-2 text-sm text-slate-500">
+        Reviewee: <%= [ @review_cycle.reviewee.first_name, @review_cycle.reviewee.last_name ].join(" ") %>
+        |
+        Manager: <%= [ @review_cycle.manager.first_name, @review_cycle.manager.last_name ].join(" ") %>
+      </p>
+    </div>
+
+    <%= link_to "Back to Cycles", dashboard_cycles_path, class: "inline-flex items-center justify-center rounded-2xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:text-slate-900" %>
+  </div>
+
+  <% if flash[:notice].present? || flash[:alert].present? %>
+    <div class="space-y-3">
+      <% if flash[:notice].present? %>
+        <div class="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">
+          <%= flash[:notice] %>
+        </div>
+      <% end %>
+      <% if flash[:alert].present? %>
+        <div class="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-800">
+          <%= flash[:alert] %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="rounded-3xl border border-slate-200 bg-white shadow-shell">
+    <div class="border-b border-slate-200 px-6 py-5">
+      <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Assignments</p>
+      <h2 class="mt-1 text-xl font-semibold text-slate-900">Send reviewer magic links</h2>
+    </div>
+
+    <% if @review_assignments.any? %>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-slate-200">
+          <thead class="bg-slate-50">
+            <tr class="text-left text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+              <th class="px-6 py-4">Type</th>
+              <th class="px-6 py-4">Reviewer</th>
+              <th class="px-6 py-4">Email</th>
+              <th class="px-6 py-4">Status</th>
+              <th class="px-6 py-4">Link</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 bg-white text-sm text-slate-700">
+            <% @review_assignments.each do |assignment| %>
+              <tr>
+                <td class="px-6 py-4">
+                  <span class="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600"><%= assignment.assignment_type %></span>
+                </td>
+                <td class="px-6 py-4 font-medium text-slate-900"><%= [ assignment.reviewer.first_name, assignment.reviewer.last_name ].join(" ") %></td>
+                <td class="px-6 py-4"><%= assignment.reviewer.email %></td>
+                <td class="px-6 py-4"><%= assignment.status %></td>
+                <td class="px-6 py-4">
+                  <%= button_to "Send magic link",
+                    send_magic_link_review_cycle_review_assignment_path(@review_cycle, assignment),
+                    method: :post,
+                    class: "inline-flex items-center justify-center rounded-2xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="px-6 py-12 text-center">
+        <p class="text-lg font-semibold text-slate-900">No review assignments yet.</p>
+        <p class="mt-2 text-sm text-slate-500">Create self, manager, and peer assignments for this cycle before sending reviewer links.</p>
+      </div>
+    <% end %>
+  </div>
+</div>

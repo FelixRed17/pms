@@ -1,0 +1,17 @@
+<p>Hello <%= [ @reviewer.first_name, @reviewer.last_name ].join(" ") %>,</p>
+
+<p>
+  You have been asked to complete a <%= @review_assignment.assignment_type %> review for
+  <strong><%= [ @reviewee.first_name, @reviewee.last_name ].join(" ") %></strong>
+  in the <%= @review_cycle.name %> cycle.
+</p>
+
+<p>
+  Use your secure magic link to open the review form:
+</p>
+
+<p>
+  <a href="<%= @review_url %>"><%= @review_url %></a>
+</p>
+
+<p>This link is single-use and expires automatically.</p>

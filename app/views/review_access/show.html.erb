@@ -1,8 +1,41 @@
 <h1>Review Access</h1>
 
 <p>Your secure review link is active.</p>
-<p>Resource: <%= @resource.class.name %> #<%= @resource.id %></p>
+<p>Assignment: <%= @assignment.name %></p>
+
+<% if @submission_errors.any? %>
+  <div>
+    <p>We could not submit your review:</p>
+    <ul>
+      <% @submission_errors.each do |error| %>
+        <li><%= error %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
 
 <%= form_with url: consume_review_access_path, method: :post, local: true do |form| %>
-  <%= form.submit "Continue" %>
+  <% @questions.each do |question| %>
+    <div>
+      <p><%= question.dynamic_text(reviewer: @assignment.reviewer, reviewee: @assignment.reviewee) %></p>
+
+      <% case question.question_type %>
+      <% when "text" %>
+        <%= text_area_tag "responses[#{question.id}][text_value]", nil, rows: 4 %>
+      <% when "rating" %>
+        <%= number_field_tag "responses[#{question.id}][rating_value]", nil, in: 1..5 %>
+      <% when "boolean" %>
+        <label>
+          <%= radio_button_tag "responses[#{question.id}][boolean_value]", "true" %>
+          Yes
+        </label>
+        <label>
+          <%= radio_button_tag "responses[#{question.id}][boolean_value]", "false" %>
+          No
+        </label>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= form.submit "Submit review" %>
 <% end %>
