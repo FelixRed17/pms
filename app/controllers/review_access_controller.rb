@@ -18,8 +18,9 @@ class ReviewAccessController < ApplicationController
   before_action :load_magic_link_from_session, only: [:submit, :consume]
   before_action :load_review_request, only: [:show, :submit]
 
-  def show
+  def exchange
     @magic_link.mark_accessed!
+    reset_session
     persist_magic_link_session!(@magic_link)
     @review_submission = @review_request.build_submission_with_answers
   end
@@ -44,14 +45,22 @@ class ReviewAccessController < ApplicationController
   end
 
   def consume
-    unless @magic_link.consume!
-      reset_magic_link_session!
-      redirect_to invalid_review_access_path, alert: INVALID_LINK_MESSAGE
+    load_review_assignment_context
+
+    result = SubmitReviewAssignment.call(
+      magic_link: @magic_link,
+      responses_params: review_submission_params
+    )
+
+    unless result.success?
+      @submission_errors = result.errors
+      flash.now[:alert] = @submission_errors.to_sentence
+      render :show, status: :unprocessable_entity
       return
     end
 
     reset_magic_link_session!
-    redirect_to confirmation_review_access_path, notice: "Magic link accepted."
+    redirect_to confirmation_review_access_path, notice: "Review submitted."
   end
 
   def invalid
@@ -103,9 +112,7 @@ class ReviewAccessController < ApplicationController
     session.delete(:magic_link_resource_id)
   end
 
-  private
-
-  def review_access_show_rate_key
+  def review_access_exchange_rate_key
     [
       request.remote_ip,
       MagicLink.digest(params[:token].to_s)

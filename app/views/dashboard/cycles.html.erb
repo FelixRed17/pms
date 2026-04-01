@@ -33,7 +33,7 @@
             <th class="px-6 py-4">Manager</th>
             <th class="px-6 py-4">Peers</th>
             <th class="px-6 py-4">Status</th>
-            <th class="px-6 py-4">Requests</th>
+            <th class="px-6 py-4">Actions</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-100 bg-white text-sm text-slate-700">
@@ -50,43 +50,7 @@
                 <span class="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600"><%= cycle.status %></span>
               </td>
               <td class="px-6 py-4">
-                <div class="space-y-4">
-                  <% cycle.review_requests.order(:reviewer_role, :id).each do |review_request| %>
-                    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                      <div class="flex items-start justify-between gap-3">
-                        <div>
-                          <p class="text-sm font-semibold text-slate-900">
-                            <%= review_request.reviewer_role.humanize %>
-                            <% if review_request.reviewer %>
-                              · <%= review_request.reviewer.full_name %>
-                            <% end %>
-                          </p>
-                          <p class="mt-1 text-xs text-slate-500"><%= review_request.recipient_email %></p>
-                          <p class="mt-2 text-xs uppercase tracking-[0.18em] text-slate-400">
-                            Delivery <span class="font-semibold text-slate-600"><%= review_request.delivery_status %></span>
-                            <% if review_request.last_sent_at.present? %>
-                              · Sent <%= review_request.last_sent_at.to_fs(:short) %>
-                            <% end %>
-                          </p>
-                          <% last_audit = review_request.review_request_audits.order(:created_at).last %>
-                          <% if last_audit&.reissued? %>
-                            <p class="mt-2 text-xs text-slate-500">Last reissue reason: <%= last_audit.reason %></p>
-                          <% end %>
-                          <% if review_request.last_delivery_error.present? %>
-                            <p class="mt-2 text-xs text-orange-600"><%= review_request.last_delivery_error %></p>
-                          <% end %>
-                        </div>
-                      </div>
-
-                      <% unless review_request.completed? %>
-                        <%= form_with url: reissue_review_request_path(review_request), method: :post, class: "mt-4 space-y-2" do |form| %>
-                          <%= form.text_field :reason, name: "review_request[reason]", placeholder: "Reason for reissue", required: true, class: "block w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100" %>
-                          <%= form.submit "Reissue Link", class: "inline-flex items-center justify-center rounded-2xl border border-slate-300 bg-white px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-700 shadow-sm transition hover:border-slate-400 hover:bg-slate-100 hover:text-slate-900" %>
-                        <% end %>
-                      <% end %>
-                    </div>
-                  <% end %>
-                </div>
+                <%= link_to "Assignments", review_cycle_review_assignments_path(cycle), class: "inline-flex items-center justify-center rounded-2xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:text-slate-900" %>
               </td>
             </tr>
           <% end %>

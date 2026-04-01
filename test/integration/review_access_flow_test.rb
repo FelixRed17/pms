@@ -8,15 +8,21 @@ class ReviewAccessFlowTest < ActionDispatch::IntegrationTest
   test "valid magic link shows the access page and records access time" do
     magic_link = MagicLink.issue!(purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION, resource: @review_request)
 
-    get review_access_path(token: magic_link.raw_token)
+    get review_access_token_path(token: magic_link.raw_token)
+
+    assert_redirected_to review_access_path
+
+    follow_redirect!
 
     assert_response :success
     assert_includes response.body, "Your secure review link is active."
+    assert_includes response.body, "What are Ada Lovelace&#39;s strongest contributions?"
+    assert_includes response.body, "How effectively does Ada Lovelace collaborate with the team?"
     assert_predicate magic_link.reload.accessed_at, :present?
   end
 
   test "invalid token redirects to the invalid page" do
-    get review_access_path(token: "invalid-token")
+    get review_access_token_path(token: "invalid-token")
 
     assert_redirected_to invalid_review_access_path
 
@@ -33,7 +39,7 @@ class ReviewAccessFlowTest < ActionDispatch::IntegrationTest
       expires_at: 1.minute.ago
     )
 
-    get review_access_path(token: magic_link.raw_token)
+    get review_access_token_path(token: magic_link.raw_token)
 
     assert_redirected_to invalid_review_access_path
   end
@@ -45,7 +51,25 @@ class ReviewAccessFlowTest < ActionDispatch::IntegrationTest
     post submit_review_access_path(token: magic_link.raw_token), params: valid_submission_params(@review_request)
 
     assert_redirected_to confirmation_review_access_path
+    assert_equal "submitted", @assignment.reload.status
+    assert_equal 2, @assignment.review_answers.count
     assert_predicate magic_link.reload, :used?
+  end
+
+  test "invalid submission rerenders the form and keeps the link active" do
+    magic_link = MagicLink.issue!(purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION, resource: @assignment)
+
+    get review_access_token_path(token: magic_link.raw_token)
+    post consume_review_access_path, params: {
+      responses: {
+        @shared_question.id.to_s => { text_value: "Ada is dependable." }
+      }
+    }
+
+    assert_response :unprocessable_entity
+    assert_includes response.body, "All review questions must be answered."
+    assert_not_predicate magic_link.reload, :used?
+    assert_equal "pending", @assignment.reload.status
   end
 
   test "used links cannot be replayed" do
