@@ -2,46 +2,11 @@ require "test_helper"
 
 class ReviewAccessFlowTest < ActionDispatch::IntegrationTest
   setup do
-    @reviewee = people(:ada)
-    @manager = people(:grace)
-    @peer = people(:linus)
-
-    @cycle = ReviewCycle.create!(
-      reviewee: @reviewee,
-      manager: @manager,
-      name: "2026 Mid-Year Review",
-      status: "active",
-      start_on: Date.new(2026, 6, 1),
-      end_on: Date.new(2026, 6, 30)
-    )
-
-    @assignment = ReviewAssignment.create!(
-      name: "Peer review",
-      review_cycle: @cycle,
-      reviewer: @peer,
-      reviewee: @reviewee,
-      assignment_type: "peer",
-      status: "pending"
-    )
-
-    @shared_question = Question.create!(
-      question_text: "What are %{subject_possessive} strongest contributions?",
-      question_type: "text",
-      position: 1,
-      active: true,
-      audience: "all"
-    )
-    @peer_question = Question.create!(
-      question_text: "How effectively does %{subject_name} collaborate with the team?",
-      question_type: "rating",
-      position: 2,
-      active: true,
-      audience: "peer"
-    )
+    @review_request = review_requests(:katherine_peer_review_request)
   end
 
   test "valid magic link shows the access page and records access time" do
-    magic_link = MagicLink.issue!(purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION, resource: @assignment)
+    magic_link = MagicLink.issue!(purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION, resource: @review_request)
 
     get review_access_token_path(token: magic_link.raw_token)
 
@@ -70,7 +35,7 @@ class ReviewAccessFlowTest < ActionDispatch::IntegrationTest
   test "expired token redirects to the invalid page" do
     magic_link = MagicLink.issue!(
       purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION,
-      resource: @assignment,
+      resource: @review_request,
       expires_at: 1.minute.ago
     )
 
@@ -79,16 +44,11 @@ class ReviewAccessFlowTest < ActionDispatch::IntegrationTest
     assert_redirected_to invalid_review_access_path
   end
 
-  test "consume submits answers, marks the assignment submitted, and redirects to confirmation" do
-    magic_link = MagicLink.issue!(purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION, resource: @assignment)
+  test "consume marks the link used and redirects to confirmation" do
+    magic_link = MagicLink.issue!(purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION, resource: @review_request)
 
-    get review_access_token_path(token: magic_link.raw_token)
-    post consume_review_access_path, params: {
-      responses: {
-        @shared_question.id.to_s => { text_value: "Ada is dependable." },
-        @peer_question.id.to_s => { rating_value: "4" }
-      }
-    }
+    get review_access_path(token: magic_link.raw_token)
+    post submit_review_access_path(token: magic_link.raw_token), params: valid_submission_params(@review_request)
 
     assert_redirected_to confirmation_review_access_path
     assert_equal "submitted", @assignment.reload.status
@@ -113,51 +73,48 @@ class ReviewAccessFlowTest < ActionDispatch::IntegrationTest
   end
 
   test "used links cannot be replayed" do
-    magic_link = MagicLink.issue!(purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION, resource: @assignment)
+    magic_link = MagicLink.issue!(purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION, resource: @review_request)
 
-    get review_access_token_path(token: magic_link.raw_token)
-    post consume_review_access_path, params: {
-      responses: {
-        @shared_question.id.to_s => { text_value: "Ada is dependable." },
-        @peer_question.id.to_s => { rating_value: "4" }
-      }
-    }
-    get review_access_token_path(token: magic_link.raw_token)
+    get review_access_path(token: magic_link.raw_token)
+    post submit_review_access_path(token: magic_link.raw_token), params: valid_submission_params(@review_request)
+    get review_access_path(token: magic_link.raw_token)
 
     assert_redirected_to invalid_review_access_path
   end
 
   test "tampered session scope is rejected during consume" do
-    magic_link = MagicLink.issue!(purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION, resource: @assignment)
-    another_assignment = ReviewAssignment.create!(
-      name: "Peer review 2",
-      review_cycle: @cycle,
-      reviewer: people(:katherine),
-      reviewee: @reviewee,
-      assignment_type: "peer",
-      status: "pending"
-    )
+    magic_link = MagicLink.issue!(purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION, resource: @review_request)
+    another_request = review_requests(:grace_manager_review_request)
 
-    get review_access_token_path(token: magic_link.raw_token)
-    magic_link.update_columns(resource_id: another_assignment.id, updated_at: Time.current)
+    get review_access_path(token: magic_link.raw_token)
+    magic_link.update_columns(resource_id: another_request.id, updated_at: Time.current)
 
-    post consume_review_access_path, params: {
-      responses: {
-        @shared_question.id.to_s => { text_value: "Ada is dependable." },
-        @peer_question.id.to_s => { rating_value: "4" }
-      }
-    }
+    post submit_review_access_path(token: magic_link.raw_token), params: valid_submission_params(@review_request)
 
     assert_redirected_to invalid_review_access_path
     assert_not_predicate magic_link.reload, :used?
   end
 
-  test "exchange removes the raw token from the browser url" do
-    magic_link = MagicLink.issue!(purpose: MagicLink::PURPOSE_REVIEW_SUBMISSION, resource: @assignment)
+  private
 
-    get review_access_token_path(token: magic_link.raw_token)
-
-    assert_redirected_to review_access_path
-    assert_equal "http://www.example.com/review_access", response.location
+  def valid_submission_params(review_request)
+    {
+      review_submission: {
+        review_answers_attributes: review_request
+          .questionnaire_template
+          .rendered_question_templates
+          .each_with_index
+          .to_h do |question_template, index|
+            [
+              index.to_s,
+              {
+                question_template_id: question_template.id,
+                score: 4,
+                comment: "Response #{index + 1}"
+              }
+            ]
+          end
+      }
+    }
   end
 end

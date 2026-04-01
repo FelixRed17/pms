@@ -934,6 +934,29 @@ textarea {
   min-height: 88px;
 }
 
+.review-cycle-form input:not([type="hidden"]):not([type="radio"]):not([type="checkbox"]),
+.review-cycle-form select,
+.review-cycle-form textarea {
+  background: #ffffff;
+  color: #0f172a;
+  caret-color: #0f172a;
+  border-color: #e2e8f0;
+}
+
+.review-cycle-form input:not([type="hidden"]):not([type="radio"]):not([type="checkbox"])::placeholder,
+.review-cycle-form textarea::placeholder {
+  color: #94a3b8;
+}
+
+.review-cycle-form input:not([type="hidden"]):not([type="radio"]):not([type="checkbox"]):focus-visible,
+.review-cycle-form select:focus-visible,
+.review-cycle-form textarea:focus-visible {
+  background: #ffffff;
+  color: #0f172a;
+  border-color: #f97316;
+  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.12);
+}
+
 .tag-suggestions {
   margin-top: 0.75rem;
   display: flex;

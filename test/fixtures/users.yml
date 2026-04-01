@@ -1,0 +1,4 @@
+hr_user:
+  email: hr@example.com
+  name: HR User
+  role: hr

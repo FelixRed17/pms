@@ -1,29 +1,27 @@
 class ReviewAnswer < ApplicationRecord
-    belongs_to :review_assignment
-    belongs_to :question
+  belongs_to :review_submission, inverse_of: :review_answers
+  belongs_to :question_template, inverse_of: :review_answers
 
-    validates :question_id, uniqueness: {
-      scope: :review_assignment_id,
-      message: "already has an answer for this assignment"
-    }
+  validates :question_template_id, uniqueness: { scope: :review_submission_id }
+  validates :score, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 5 }, allow_nil: true
+  validate :score_requirements
+  validate :comment_requirements
 
-    validate :value_matches_question_type
+  delegate :required?, :requires_comment?, :requires_score?, to: :question_template
 
-    private
+  private
 
-    def value_matches_question_type
-      return unless question
+  def score_requirements
+    return unless question_template
+    return unless requires_score? && score.blank?
 
-      case question.question_type
-      when "text"
-        errors.add(:base, "must match the question type") unless text_value.present? &&
-  rating_value.blank? && boolean_value.nil?
-      when "rating"
-        valid = rating_value.present? && text_value.blank? && boolean_value.nil?
-        errors.add(:base, "must match the question type") unless valid
-      when "boolean"
-        valid = !boolean_value.nil? && text_value.blank? && rating_value.blank?
-        errors.add(:base, "must match the question type") unless valid
-      end
-    end
+    errors.add(:score, "can't be blank")
   end
+
+  def comment_requirements
+    return unless question_template
+    return unless required? && requires_comment? && comment.blank?
+
+    errors.add(:comment, "can't be blank")
+  end
+end

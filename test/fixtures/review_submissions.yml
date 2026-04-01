@@ -1,0 +1,26 @@
+self_submission:
+  review_request: ada_self_review_request
+  review_cycle: engineering_q2
+  reviewee: ada
+  reviewer: ada
+  reviewer_role: reviewee
+  status: submitted
+  submitted_at: 2026-04-15 10:00:00
+
+peer_submission:
+  review_request: linus_peer_review_request
+  review_cycle: engineering_q2
+  reviewee: ada
+  reviewer: linus
+  reviewer_role: peer
+  status: submitted
+  submitted_at: 2026-04-16 10:00:00
+
+manager_submission:
+  review_request: grace_manager_review_request
+  review_cycle: engineering_q2
+  reviewee: ada
+  reviewer: grace
+  reviewer_role: manager
+  status: submitted
+  submitted_at: 2026-04-17 10:00:00

@@ -8,6 +8,8 @@ class ReviewCycle < ApplicationRecord
   has_many :review_assignments, dependent: :destroy, inverse_of: :review_cycle
   has_many :peer_review_assignments, dependent: :destroy, inverse_of: :review_cycle
   has_many :peer_reviewers, through: :peer_review_assignments, source: :peer_reviewer
+  has_many :review_requests, dependent: :destroy, inverse_of: :review_cycle
+  has_many :review_submissions, dependent: :destroy, inverse_of: :review_cycle
 
   validates :name, presence: true
   validates :status, presence: true, inclusion: { in: STATUSES }
