@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_31_104000) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_01_082715) do
   create_table "magic_links", force: :cascade do |t|
     t.datetime "accessed_at"
     t.datetime "created_at", null: false
@@ -74,14 +74,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_31_104000) do
   end
 
   create_table "questions", force: :cascade do |t|
-    t.text "content", null: false
+    t.boolean "active", default: true, null: false
+    t.string "audience", default: "all", null: false
     t.datetime "created_at", null: false
     t.integer "position", null: false
+    t.text "question_text", null: false
     t.string "question_type", null: false
-    t.integer "review_cycle_id", null: false
     t.datetime "updated_at", null: false
-    t.index ["review_cycle_id", "position"], name: "index_questions_on_review_cycle_id_and_position", unique: true
-    t.index ["review_cycle_id"], name: "index_questions_on_review_cycle_id"
+    t.index ["active", "position"], name: "index_questions_on_active_and_position"
+    t.index ["active"], name: "index_questions_on_active"
+    t.index ["audience"], name: "index_questions_on_audience"
   end
 
   create_table "review_answers", force: :cascade do |t|
@@ -97,9 +99,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_31_104000) do
   end
 
   create_table "review_assignments", force: :cascade do |t|
+    t.string "assignment_type", null: false
     t.datetime "created_at", null: false
     t.string "name", null: false
+    t.integer "review_cycle_id", null: false
+    t.integer "reviewee_id", null: false
+    t.integer "reviewer_id", null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "submitted_at"
     t.datetime "updated_at", null: false
+    t.index ["review_cycle_id", "reviewer_id", "assignment_type"], name: "index_review_assignments_uniqueness", unique: true
+    t.index ["review_cycle_id"], name: "index_review_assignments_on_review_cycle_id"
+    t.index ["reviewee_id"], name: "index_review_assignments_on_reviewee_id"
+    t.index ["reviewer_id"], name: "index_review_assignments_on_reviewer_id"
   end
 
   create_table "review_cycles", force: :cascade do |t|
@@ -176,9 +188,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_31_104000) do
   add_foreign_key "peer_review_assignments", "review_cycles"
   add_foreign_key "people", "users"
   add_foreign_key "question_templates", "questionnaire_templates"
-  add_foreign_key "questions", "review_cycles"
   add_foreign_key "review_answers", "question_templates"
   add_foreign_key "review_answers", "review_submissions"
+  add_foreign_key "review_assignments", "people", column: "reviewee_id"
+  add_foreign_key "review_assignments", "people", column: "reviewer_id"
+  add_foreign_key "review_assignments", "review_cycles"
   add_foreign_key "review_cycles", "people", column: "manager_id"
   add_foreign_key "review_cycles", "people", column: "reviewee_id"
   add_foreign_key "review_request_audits", "review_requests"

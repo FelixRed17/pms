@@ -19,38 +19,47 @@
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <script>
+    <%= javascript_tag nonce: true do %>
       tailwind = {
         config: {
           theme: {
             extend: {
               fontFamily: {
-                sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"]
+                sans: ["Geist Mono", "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
+                mono: ["Geist Mono", "ui-monospace", "SFMono-Regular", "Menlo", "monospace"]
               },
               colors: {
                 brand: {
-                  50: "#fff7ed",
-                  100: "#ffedd5",
-                  500: "#f97316",
-                  600: "#ea580c",
-                  700: "#c2410c"
+                  500: "#f25103",
+                  600: "#d9480f",
+                  700: "#b63a08"
+                },
+                frame: {
+                  950: "#050505",
+                  925: "#090909",
+                  900: "#101010",
+                  850: "#141414",
+                  800: "#1a1a1a",
+                  700: "#262626",
+                  600: "#3a3a3a"
                 }
               },
               boxShadow: {
-                shell: "0 24px 60px rgba(15, 23, 42, 0.08)",
-                card: "0 10px 30px rgba(15, 23, 42, 0.06)"
+                shell: "0 0 0 1px rgba(242, 81, 3, 0.12), 0 24px 70px rgba(0, 0, 0, 0.55)",
+                card: "0 12px 30px rgba(0, 0, 0, 0.28)"
               }
             }
           }
         }
       }
-    </script>
+    <% end %>
     <script src="https://cdn.tailwindcss.com"></script>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "styles", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="min-h-screen bg-slate-100 font-sans text-slate-900 antialiased">
+  <body class="min-h-screen bg-frame-950 font-mono text-white antialiased selection:bg-brand-500/30 selection:text-white">
+    <div class="noise"></div>
     <% if @render_dashboard_shell %>
       <%= render "shared/dashboard_shell" %>
     <% else %>
