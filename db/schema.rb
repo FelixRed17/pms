@@ -74,16 +74,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_01_082715) do
   end
 
   create_table "questions", force: :cascade do |t|
-    t.boolean "active", default: true, null: false
+    t.boolean "active"
     t.string "audience", default: "all", null: false
     t.datetime "created_at", null: false
-    t.integer "position", null: false
-    t.text "question_text", null: false
-    t.string "question_type", null: false
+    t.integer "position"
+    t.text "question_text"
+    t.string "question_type"
     t.datetime "updated_at", null: false
     t.index ["active", "position"], name: "index_questions_on_active_and_position"
     t.index ["active"], name: "index_questions_on_active"
     t.index ["audience"], name: "index_questions_on_audience"
+    t.index ["position"], name: "index_questions_on_position"
   end
 
   create_table "review_answers", force: :cascade do |t|
@@ -126,17 +127,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_01_082715) do
     t.datetime "updated_at", null: false
     t.index ["manager_id"], name: "index_review_cycles_on_manager_id"
     t.index ["reviewee_id"], name: "index_review_cycles_on_reviewee_id"
-  end
-
-  create_table "review_request_audits", force: :cascade do |t|
-    t.string "action", null: false
-    t.datetime "created_at", null: false
-    t.integer "performed_by_id"
-    t.text "reason"
-    t.integer "review_request_id", null: false
-    t.datetime "updated_at", null: false
-    t.index ["performed_by_id"], name: "index_review_request_audits_on_performed_by_id"
-    t.index ["review_request_id"], name: "index_review_request_audits_on_review_request_id"
   end
 
   create_table "review_requests", force: :cascade do |t|
@@ -195,8 +185,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_01_082715) do
   add_foreign_key "review_assignments", "review_cycles"
   add_foreign_key "review_cycles", "people", column: "manager_id"
   add_foreign_key "review_cycles", "people", column: "reviewee_id"
-  add_foreign_key "review_request_audits", "review_requests"
-  add_foreign_key "review_request_audits", "users", column: "performed_by_id"
   add_foreign_key "review_requests", "people", column: "reviewee_id"
   add_foreign_key "review_requests", "people", column: "reviewer_id"
   add_foreign_key "review_requests", "review_cycles"

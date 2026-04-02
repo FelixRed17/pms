@@ -4,6 +4,7 @@ class EnforceOneSubmittedSubmissionPerRequest < ActiveRecord::Migration[8.1]
       :review_request_id,
       unique: true,
       where: "status = 'submitted'",
-      name: "idx_one_submitted_review_submission_per_request"
+      name: "idx_one_submitted_review_submission_per_request",
+      if_not_exists: true
   end
 end
